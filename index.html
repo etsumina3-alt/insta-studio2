@@ -114,8 +114,8 @@ init();refreshAlignScope();installEnhancements();})();
   editor.prepend(bar,design,ops);
   // Unwrap the extension container so every feature can be assigned a tab.
   Array.from(editor.children).filter(el=>el.tagName==='DIV'&&!el.id&&!el.classList.length).forEach(wrapper=>{if(wrapper.querySelector(':scope > .enhance')){while(wrapper.firstChild)editor.append(wrapper.firstChild);wrapper.remove()}});
-  const swap=document.getElementById('swapGrid')?.closest('.enhance');if(swap)ops.append(swap);
-  const panels=Array.from(editor.querySelectorAll(':scope > .panel, :scope > .enhance')).concat(swap?[swap]:[]);
+  // Parking slots stay directly under the main canvas, independent of active tab.
+  const panels=Array.from(editor.querySelectorAll(':scope > .panel, :scope > .enhance'));
   const getTitle=el=>el.querySelector('h3')?.textContent?.trim()||'';
   const byTitle=s=>panels.find(el=>getTitle(el).includes(s));
   const move=(key,target)=>{const el=byTitle(key);if(el)target.append(el)};
@@ -128,7 +128,7 @@ init();refreshAlignScope();installEnhancements();})();
   }
   // Element appearance controls stay together with their related colors and sizes.
   ['テンプレート','選択中の要素を編集','文字のデザイン・質感','デザイン文字プリセット','イラスト・装飾素材','装飾・セクション素材'].forEach(s=>move(s,design));
-  ['レイヤー一覧','文字と図形をセット','整列・シンメトリー','複数選択・グループ化','一時退避ウィンドウ','全体操作','プロジェクト'].forEach(s=>move(s,ops));
+  ['レイヤー一覧','文字と図形をセット','整列・シンメトリー','複数選択・グループ化','全体操作','プロジェクト'].forEach(s=>move(s,ops));
   // Any new future sections remain reachable instead of being hidden.
   Array.from(editor.children).filter(el=>el.classList.contains('panel')||el.classList.contains('enhance')).forEach(el=>ops.append(el));
   let previous='design';try{previous=sessionStorage.getItem('instaStudioActiveTab')||'design'}catch(e){}
